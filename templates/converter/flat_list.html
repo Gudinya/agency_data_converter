@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block heading %}
+    <div class="row">
+        <div class="col-xs-1">
+            <a href="{% url 'converter:list' %}" class="glyphicon glyphicon-arrow-left tla" aria-hidden="true"></a>
+        </div>
+        <div class="col-xs-2">Квартиры</div>
+        <div class="col-xs-9 add-col">
+            <a href="{% url 'converter:create_flat' fk %}" class="glyphicon glyphicon-plus-sign tla tla-add" aria-hidden="true"></a>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block content %}
+
+    <table class="table">
+        <tr>
+            <th>Уникальный идентификатор</th>
+            <th>Номер корпуса</th>
+            <th>Номер секции</th>
+            <th>Номер этажа</th>
+            <th>Номер на этаже</th>
+            <th>Площадь</th>
+            <th>Цена</th>
+            <th>Балкон</th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for flat in flat_list %}
+            <tr>
+                <td>{{ flat.uid }}</td>
+                <td>{{ flat.housing }}</td>
+                <td>{{ flat.section }}</td>
+                <td>{{ flat.floor }}</td>
+                <td>{{ flat.num_on_floor }}</td>
+                <td>{{ flat.area }}</td>
+                <td>{{ flat.price }}</td>
+                <td>{{ flat.balcony }}</td>
+                <td><a href="{% url 'converter:update_flat' flat.pk %}" class="btn btn-primary">Редактировать</a></td>
+                <td><a href="{% url 'converter:delete_flat' flat.pk %}" class="btn btn-danger">Удалить</a></td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td><p>Нет квартир для отображения.</p></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+

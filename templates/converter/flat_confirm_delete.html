@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block heading %}Удаление{% endblock %}
+
+{% block content %}
+    <p>Вы действительно хотите удалить эту квартиру?</p>
+
+    <form id="gilkvar_form" method="post" action=".">
+    {% csrf_token %}
+    <input type="submit" value="Да" class="btn btn-primary" /> <a href="{% url 'converter:list' %}" class="btn btn-danger">Нет</a>
+    </form>
+{% endblock %}
+

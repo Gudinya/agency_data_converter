@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block heading %}
+    <div class="row">
+        <div class="col-xs-2">ЖК</div>
+        <div class="col-xs-10 add-col">
+            <a href="{% url 'converter:create' %}" class="glyphicon glyphicon-plus-sign tla tla-add" aria-hidden="true"></a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <table class="table">
+        <tr>
+            <th>Наименование</th>
+            <th>Город</th>
+            <th>Адрес</th>
+            <th>кол-во квартир имеющих в продаже</th>
+            <th>ссылка XML</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for gilkvargilkvar in gilkvar_list %}
+            <tr>
+                <td><a href="{% url 'converter:flats' gilkvargilkvar.pk %}"> {{ gilkvargilkvar.name }}</a></td>
+                <td>{{ gilkvargilkvar.city }}</td>
+                <td>{{ gilkvargilkvar.address }}</td>
+                <td>{{ gilkvargilkvar.flatcount }}</td>
+                <td><a href="{% url 'converter:getdata' gilkvargilkvar.pk 'yrl' %}">Скачать</a></td>
+                <td>
+                    <form method="post" id="fileupload" action="{% url 'converter:uploadflats' gilkvargilkvar.pk %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="fileUpload btn btn-success">
+                            <span>Загрузка квартир</span>
+                            <input type="file" class="upload" name="file" onchange="this.form.submit()"/>
+                        </div>
+                    </form>
+                </td>
+                <td><a href="{% url 'converter:update' gilkvargilkvar.pk %}" class="btn btn-primary">Редактировать</a></td>
+                <td><a href="{% url 'converter:delete' gilkvargilkvar.pk %}" class="btn btn-danger">Удалить</a></td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td><p>Нет элементов для отображения.</p></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+    <div class="modal fade" id="uploadRes" tabindex="-1" role="dialog" aria-labelledby="uploadResLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="uploadResLabel">Результат загрузки</h4>
+                </div>
+                <div class="modal-body">
+                    Было загружено <span id="loadnum">{{ uplflatcount }}</span> квартир.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Ок</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_script %}
+    <script type="text/javascript">
+        $(function () {
+            var doshow = "{{ uplpk }}"
+            if (doshow != "") {
+                $('#uploadRes').modal('show')
+            }
+        });
+    </script>
+{% endblock %}

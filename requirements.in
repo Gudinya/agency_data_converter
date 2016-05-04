@@ -1,0 +1,11 @@
+pip-tools
+ipython
+ipdb
+flake8
+Django
+django-model-utils
+django-bootstrap3
+django-vanilla-views
+django-extensions
+django-clear-cache
+django-configurations
